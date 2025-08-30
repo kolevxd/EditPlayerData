@@ -299,7 +299,12 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
             Settings["Powers"].Add(new NumberPlayerDataSetting(
                 LocalizationManager.Instance.Format(power.name),
                 power.icon.GetGUID(), 0,
-                () => GetPlayer().GetPowerData(power.name)?.Quantity ?? 0,
+                () =>
+                {
+                    var pd = GetPlayer().GetPowerData(power.name);
+                    if (pd == null) return 0;
+                    return pd.Quantity;
+                },
                 t =>
                 {
                     var pd = GetPlayer().GetPowerData(power.name);
@@ -308,11 +313,9 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                         GetPlayer().AddPower(power.name, t);
                         pd = GetPlayer().GetPowerData(power.name);
                     }
-                    if (pd != null)
-                    {
-                        pd.Quantity = t;
-                    }
+                    pd.Quanity = t;
                 }));
+                    
         }
 
         foreach (var tower in Game.instance.GetTowerDetailModels())

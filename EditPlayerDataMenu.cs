@@ -313,7 +313,7 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                         GetPlayer().AddPower(power.name, t);
                         pd = GetPlayer().GetPowerData(power.name);
                     }
-                    pd.Quanity = t;
+                    pd.Quantity = t;
                 }));
                     
         }

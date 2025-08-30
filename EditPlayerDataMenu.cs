@@ -302,18 +302,21 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                 () =>
                 {
                     var pd = GetPlayer().GetPowerData(power.name);
-                    if (pd == null) return 0;
-                    return pd.Quantity;
+                    return pd != null ? pd.Quantity : 0;
                 },
                 t =>
                 {
                     var pd = GetPlayer().GetPowerData(power.name);
                     if (pd == null)
                     {
-                        GetPlayer().AddPower(power.name, t);
+                        GetPlayer().AddPower(power.name, 0);
                         pd = GetPlayer().GetPowerData(power.name);
                     }
-                    pd.Quantity = t;
+                    if (pd != null)
+                    {
+                        pd.Quantity = t;
+                        GetPlayer().SaveNow();
+                    }
                 }));
                     
         }

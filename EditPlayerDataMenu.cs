@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -79,81 +79,8 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                     () => GetPlayer().Data.continuesUsed.ValueInt, t => GetPlayer().Data.continuesUsed.Value = t),
                 new BoolPlayerDataSetting("Unlocked Big Bloons", VanillaSprites.BigBloonModeIcon, false,
                     () => GetPlayer().Data.unlockedBigBloons, t => GetPlayer().Data.unlockedBigBloons = t),
-                
                 new BoolPlayerDataSetting("Unlocked Small Bloons", VanillaSprites.SmallBloonModeIcon, false,
                     () => GetPlayer().Data.unlockedSmallBloons, t => GetPlayer().Data.unlockedSmallBloons = t),
-                new NumberPlayerDataSetting("Games Played", VanillaSprites.ConfettiIcon, 0,
-                    () => GetPlayer().Stats.gameCount, 
-                    t => GetPlayer().Stats.gameCount = t),
-
-                new NumberPlayerDataSetting("Games Won", VanillaSprites.VictoryIcon, 0,
-                    () => GetPlayer().Stats.gamesWon, 
-                    t => GetPlayer().Stats.gamesWon = t),
-
-                new NumberPlayerDataSetting("Highest Round", VanillaSprites.RoundIcon, 0,
-                    () => GetPlayer().Stats.highestRound, 
-                    t => GetPlayer().Stats.highestRound = t),
-
-                new NumberPlayerDataSetting("Highest Round (Current Version)", VanillaSprites.RoundIcon, 0,
-                    () => GetPlayer().Stats.highestRoundCurrentVersion, 
-                    t => GetPlayer().Stats.highestRoundCurrentVersion = t),
-
-                new NumberPlayerDataSetting("Monkeys Placed", VanillaSprites.MonkeyIcon, 0,
-                    () => GetPlayer().Stats.monkeysPlaced, 
-                    t => GetPlayer().Stats.monkeysPlaced = t),
-
-                new NumberPlayerDataSetting("Bloons Popped", VanillaSprites.PopIcon, 0,
-                    () => GetPlayer().Stats.bloonsPopped, 
-                    t => GetPlayer().Stats.bloonsPopped = t),
-
-                new NumberPlayerDataSetting("Camos Popped", VanillaSprites.CamoBloonIcon, 0,
-                    () => GetPlayer().Stats.camosPopped, 
-                    t => GetPlayer().Stats.camosPopped = t),
-
-                new NumberPlayerDataSetting("Leads Popped", VanillaSprites.LeadBloonIcon, 0,
-                    () => GetPlayer().Stats.leadsPopped, 
-                    t => GetPlayer().Stats.leadsPopped = t),
-
-                new NumberPlayerDataSetting("Purples Popped", VanillaSprites.PurpleBloonIcon, 0,
-                    () => GetPlayer().Stats.purplesPopped, 
-                    t => GetPlayer().Stats.purplesPopped = t),
-
-                new NumberPlayerDataSetting("Regrows Popped", VanillaSprites.RegrowBloonIcon, 0,
-                    () => GetPlayer().Stats.regrowsPopped, 
-                    t => GetPlayer().Stats.regrowsPopped = t),
-
-                new NumberPlayerDataSetting("Ceramics Popped", VanillaSprites.CeramicBloonIcon, 0,
-                    () => GetPlayer().Stats.ceramicsPopped, 
-                    t => GetPlayer().Stats.ceramicsPopped = t),
-
-                new NumberPlayerDataSetting("MOABs Popped", VanillaSprites.MoabBloonIcon, 0,
-                    () => GetPlayer().Stats.moabsPopped, 
-                    t => GetPlayer().Stats.moabsPopped = t),
-
-                new NumberPlayerDataSetting("BFBs Popped", VanillaSprites.BfbBloonIcon, 0,
-                    () => GetPlayer().Stats.bfbsPopped, 
-                    t => GetPlayer().Stats.bfbsPopped = t),
-
-                new NumberPlayerDataSetting("ZOMGs Popped", VanillaSprites.ZomgBloonIcon, 0,
-                    () => GetPlayer().Stats.zomgsPopped, 
-                    t => GetPlayer().Stats.zomgsPopped = t),
-
-                new NumberPlayerDataSetting("DDTs Popped", VanillaSprites.DdtBloonIcon, 0,
-                    () => GetPlayer().Stats.ddtsPopped, 
-                    t => GetPlayer().Stats.ddtsPopped = t),
-
-                new NumberPlayerDataSetting("BADs Popped", VanillaSprites.BadBloonIcon, 0,
-                    () => GetPlayer().Stats.badsPopped, 
-                    t => GetPlayer().Stats.badsPopped = t),
-
-                new NumberPlayerDataSetting("Cash Earned", VanillaSprites.CoinIcon, 0,
-                    () => GetPlayer().Stats.cashEarned, 
-                    t => GetPlayer().Stats.cashEarned = t),
-
-                new NumberPlayerDataSetting("Co-op Bloons Popped", VanillaSprites.CoOpIcon, 0,
-                    () => GetPlayer().Stats.coopBloonsPopped, 
-                    t => GetPlayer().Stats.coopBloonsPopped = t),
-                
                 new BoolPlayerDataSetting("Unlocked Small Bosses", VanillaSprites.SmallBossModeIcon, false,
                     () => GetPlayer().Data.unlockedSmallBosses, t => GetPlayer().Data.unlockedSmallBosses = t),
                 new BoolPlayerDataSetting("Unlocked Big Monkeys", VanillaSprites.BigMonkeysModeIcon, false,
@@ -372,26 +299,18 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
             Settings["Powers"].Add(new NumberPlayerDataSetting(
                 LocalizationManager.Instance.Format(power.name),
                 power.icon.GetGUID(), 0,
-                () =>
-                {
-                    var pd = GetPlayer().GetPowerData(power.name);
-                    return pd != null ? pd.Quantity : 0;
-                },
+                () => GetPlayer().GetPowerData(power.name)?.Quantity ?? 0,
                 t =>
                 {
-                    var pd = GetPlayer().GetPowerData(power.name);
-                    if (pd == null)
+                    if (GetPlayer().IsPowerAvailable(power.name))
                     {
-                        GetPlayer().AddPower(power.name, 0);
-                        pd = GetPlayer().GetPowerData(power.name);
+                        GetPlayer().GetPowerData(power.name).Quantity = t;
                     }
-                    if (pd != null)
+                    else
                     {
-                        pd.Quantity = t;
-                        GetPlayer().SaveNow();
+                        GetPlayer().AddPower(power.name, t);
                     }
                 }));
-                    
         }
 
         foreach (var tower in Game.instance.GetTowerDetailModels())

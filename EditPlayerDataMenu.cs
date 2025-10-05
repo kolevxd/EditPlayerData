@@ -90,7 +90,7 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                     () => GetPlayer().Data.highestSeenRoundCurrentVersion, 
                     t => GetPlayer().Data.highestSeenRoundCurrentVersion = t),
                 new NumberPlayerDataSetting("BFBs Popped", VanillaSprites.BadBloonIcon, 0,
-                    () => GetPlayer().Data.analyticsKonFuze.bfbsPopped.ValueInt,
+                    () => (int)GetPlayer().Data.analyticsKonFuze.bfbsPopped.Value,
                     t => GetPlayer().Data.analyticsKonFuze.bfbsPopped.Value = t),
                 new BoolPlayerDataSetting("Unlocked Big Monkeys", VanillaSprites.BigMonkeysModeIcon, false,
                     () => GetPlayer().Data.unlockedBigTowers, t => GetPlayer().Data.unlockedBigTowers = t),

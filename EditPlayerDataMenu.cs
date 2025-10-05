@@ -94,7 +94,12 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                     t => GetPlayer().Data.analyticsKonFuze.bfbsPopped = new KonFuze((double)t)),
                 new NumberPlayerDataSetting("Bloons Popped", VanillaSprites.BadBloonIcon, 0,
                     () => (int)GetPlayer().Data.analyticsKonFuze.bloonsPopped.Value,
-                    t => GetPlayer().Data.analyticsKonFuze.bloonsPopped.Value = (double)t),
+                    t => 
+                    {
+                        GetPlayer().Data.analyticsKonFuze.bloonsPopped.Value = (double)t;
+                        GetPlayer().Data.Dirty = true; // Wymuś flagę zapisu
+                        GetPlayer().SaveNow();
+                    }),
                 new BoolPlayerDataSetting("Unlocked Big Monkeys", VanillaSprites.BigMonkeysModeIcon, false,
                     () => GetPlayer().Data.unlockedBigTowers, t => GetPlayer().Data.unlockedBigTowers = t),
                 new BoolPlayerDataSetting("Unlocked Small Monkeys", VanillaSprites.SmallMonkeysModeIcon, false,

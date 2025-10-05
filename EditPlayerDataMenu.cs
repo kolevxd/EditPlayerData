@@ -89,17 +89,42 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                 new NumberPlayerDataSetting("Highest Seen Round Current Version", VanillaSprites.BadBloonIcon, 0,
                     () => GetPlayer().Data.highestSeenRoundCurrentVersion, 
                     t => GetPlayer().Data.highestSeenRoundCurrentVersion = t),
+                new BoolPlayerDataSetting("Unlock All Towers", VanillaSprites.TrophyIcon, false,
+                    () => Game.instance.GetTowerDetailModels().All(tower => GetPlayer().Data.unlockedTowers.Contains(tower.towerId)),
+                    t =>
+                    {
+                        if (t)
+                        {
+                            foreach (var tower in Game.instance.GetTowerDetailModels())
+                            {
+                                if (!GetPlayer().Data.unlockedTowers.Contains(tower.towerId))
+                                {
+                                    Game.instance.towerGoalUnlockManager.CompleteGoalForTower(tower.towerId);
+                                    GetPlayer().Data.UnlockTower(tower.towerId);
+                                }
+                            }
+                        }
+                    }),
+                new BoolPlayerDataSetting("Unlock All Heroes", VanillaSprites.HeroIcon, false,
+                    () => Game.instance.GetHeroDetailModels().All(hero => GetPlayer().Data.unlockedHeroes.Contains(hero.heroId)),
+                    t =>
+                    {
+                        if (t)
+                        {
+                            foreach (var hero in Game.instance.GetHeroDetailModels())
+                            {
+                                if (!GetPlayer().Data.unlockedHeroes.Contains(hero.heroId))
+                                {
+                                    GetPlayer().Data.UnlockHero(hero.heroId);
+                                }
+                            }
+                        }
+                    }),
+
                 new NumberPlayerDataSetting("BFBs Popped", VanillaSprites.BadBloonIcon, 0,
                     () => (int)GetPlayer().Data.analyticsKonFuze.bfbsPopped.Value,
                     t => GetPlayer().Data.analyticsKonFuze.bfbsPopped = new KonFuze((double)t)),
-                new NumberPlayerDataSetting("Bloons Popped", VanillaSprites.BadBloonIcon, 0,
-                    () => (int)GetPlayer().Data.analyticsKonFuze.bloonsPopped.Value,
-                    t => 
-                    {
-                        GetPlayer().Data.analyticsKonFuze.bloonsPopped.Value = (double)t;
-                        GetPlayer().Data.Dirty = true; // Wymuś flagę zapisu
-                        GetPlayer().SaveNow();
-                    }),
+                
                 new BoolPlayerDataSetting("Unlocked Big Monkeys", VanillaSprites.BigMonkeysModeIcon, false,
                     () => GetPlayer().Data.unlockedBigTowers, t => GetPlayer().Data.unlockedBigTowers = t),
                 new BoolPlayerDataSetting("Unlocked Small Monkeys", VanillaSprites.SmallMonkeysModeIcon, false,

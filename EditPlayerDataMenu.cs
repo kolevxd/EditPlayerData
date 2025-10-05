@@ -90,13 +90,8 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                     () => GetPlayer().Data.highestSeenRoundCurrentVersion, 
                     t => GetPlayer().Data.highestSeenRoundCurrentVersion = t),
                 new NumberPlayerDataSetting("BFBs Popped", VanillaSprites.BadBloonIcon, 0,
-                    () => GetPlayer().Data.analyticsKonFuze.TryGetValue("bfbsPopped", out var val) ? val.ValueInt : 0,
-                    t =>
-                    {
-                        if (!GetPlayer().Data.analyticsKonFuze.ContainsKey("bfbsPopped"))
-                            GetPlayer().Data.analyticsKonFuze["bfbsPopped"] = new KonFuze_NoShuffle();
-                        GetPlayer().Data.analyticsKonFuze["bfbsPopped"].Value = t;
-                    }),
+                    () => GetPlayer().Data.analyticsKonFuze.bfbsPopped.ValueInt,
+                    t => GetPlayer().Data.analyticsKonFuze.bfbsPopped.Value = t),
                 new BoolPlayerDataSetting("Unlocked Big Monkeys", VanillaSprites.BigMonkeysModeIcon, false,
                     () => GetPlayer().Data.unlockedBigTowers, t => GetPlayer().Data.unlockedBigTowers = t),
                 new BoolPlayerDataSetting("Unlocked Small Monkeys", VanillaSprites.SmallMonkeysModeIcon, false,

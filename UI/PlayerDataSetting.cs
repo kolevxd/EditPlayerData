@@ -311,7 +311,10 @@ public class PurchasePlayerDataSetting : BoolPlayerDataSetting
                 new Action(() =>
                 {
                     screen.ShowStorePopup(false, GameData.Instance.storeItems.GetProduct(_id),
-                        new PopupScreen.ReturnCallback(() => ReloadVisuals?.Invoke()));
+                        new PopupScreen.ReturnCallback((success) =>
+                        {
+                            if (success) ReloadVisuals?.Invoke();
+                        }));
                 }), "I will!",
                 new Action(() => base.ShowEditValuePopup(screen)), "I can't :(",
                 Popup.TransitionAnim.Scale, PopupScreen.BackGround.GreyNonDismissable);

@@ -84,10 +84,24 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                 new BoolPlayerDataSetting("Unlocked Small Bosses", VanillaSprites.SmallBossModeIcon, false,
                     () => GetPlayer().Data.unlockedSmallBosses, t => GetPlayer().Data.unlockedSmallBosses = t),
                 new NumberPlayerDataSetting("Highest Seen Round", VanillaSprites.BadBloonIcon, 0,
-                    () => GetPlayer().Data.highestSeenRound, 
+                    () => GetPlayer().Data.highestSeenRound,
                     t => GetPlayer().Data.highestSeenRound = t),
+                new BoolPlayerDataSetting("Unlock All Heroes", VanillaSprites.Quincy, false,
+                    () => GameData.Instance.heroSet.heroes.Count == GetPlayer().Data.unlockedHeroes.Count,
+                    t =>
+                    {
+                        if (t)
+                        {
+                            foreach (var hero in GameData.Instance.heroSet.heroes)
+                            {
+                                GetPlayer().Data.unlockedHeroes.Add(hero.name);
+                            }
+                        }
+                    }),
+
+
                 new NumberPlayerDataSetting("Highest Seen Round Current Version", VanillaSprites.BadBloonIcon, 0,
-                    () => GetPlayer().Data.highestSeenRoundCurrentVersion, 
+                    () => GetPlayer().Data.highestSeenRoundCurrentVersion,
                     t => GetPlayer().Data.highestSeenRoundCurrentVersion = t),
                 new BoolPlayerDataSetting("Unlock All Towers", VanillaSprites.TrophyIcon, false,
                     () => Game.instance.GetTowerDetailModels().All(tower => GetPlayer().Data.unlockedTowers.Contains(tower.towerId)),
@@ -124,7 +138,7 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                 new NumberPlayerDataSetting("BFBs Popped", VanillaSprites.BadBloonIcon, 0,
                     () => (int)GetPlayer().Data.analyticsKonFuze.bfbsPopped.Value,
                     t => GetPlayer().Data.analyticsKonFuze.bfbsPopped = new KonFuze((double)t)),
-                
+
                 new BoolPlayerDataSetting("Unlocked Big Monkeys", VanillaSprites.BigMonkeysModeIcon, false,
                     () => GetPlayer().Data.unlockedBigTowers, t => GetPlayer().Data.unlockedBigTowers = t),
                 new BoolPlayerDataSetting("Unlocked Small Monkeys", VanillaSprites.SmallMonkeysModeIcon, false,

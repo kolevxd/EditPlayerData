@@ -533,7 +533,7 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
     private string _category = "General";
     private int _pageIdx;
 
-    private ModHelperPanel _topArea;
+    private ModHelperPanel? _topArea;
 
     private static Btd6Player GetPlayer()
     {
@@ -682,12 +682,12 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
     private void UpdateVisibleEntries()
     {
         var anyUnlockable = Settings[_category].Any(s => !s.IsUnlocked());
-        _topArea.GetDescendent<ModHelperButton>("UnlockAll")?.SetActive(anyUnlockable);
+         _topArea?.GetDescendent<ModHelperButton>("UnlockAll")?.SetActive(anyUnlockable);
 
         var canAddAll = _category is "Powers" or "Instas" or "Artifacts";
-        _topArea.GetDescendent<ModHelperButton>("SetAll")?.SetActive(!anyUnlockable && canAddAll);
+        _topArea?.GetDescendent<ModHelperButton>("SetAll")?.SetActive(!anyUnlockable && canAddAll);
         
-        _topArea.GetDescendent<ModHelperPanel>("Special Button Filler")?.SetActive(!anyUnlockable && !canAddAll);
+        _topArea?.GetDescendent<ModHelperPanel>("Special Button Filler")?.SetActive(!anyUnlockable && !canAddAll);
 
         var settings = Settings[_category].FindAll(s => s.Name.ContainsIgnoreCase(_searchValue));
         SetPage(_pageIdx, false);

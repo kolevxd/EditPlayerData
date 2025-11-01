@@ -302,14 +302,8 @@ public class EditPlayerDataMenu : ModGameMenu<ContentBrowser>
                 () => GetPlayer().GetPowerData(power.name)?.Quantity ?? 0,
                 t =>
                 {
-                    if (GetPlayer().IsPowerAvailable(power.name))
-                    {
-                        GetPlayer().GetPowerData(power.name).Quantity = t;
-                    }
-                    else
-                    {
-                        GetPlayer().AddPower(power.name, t);
-                    }
+                    GetPlayer().AddPower(power.name, t);
+                    GetPlayer().GetPowerData(power.name).Quantity = t;
                 }));
         }
 

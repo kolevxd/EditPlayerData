@@ -311,10 +311,7 @@ public class PurchasePlayerDataSetting : BoolPlayerDataSetting
                 new Action(() =>
                 {
                     screen.ShowStorePopup(false, GameData.Instance.storeItems.GetProduct(_id),
-                        new Il2CppSystem.Action<bool>((success) => 
-                        {
-                            if (success) ReloadVisuals?.Invoke();
-                        }));
+                       new Il2CppSystem.Action(() => ReloadVisuals?.Invoke()));
                 }), "I will!",
                 new Action(() => base.ShowEditValuePopup(screen)), "I can't :(",
                 Popup.TransitionAnim.Scale, PopupScreen.BackGround.GreyNonDismissable);
